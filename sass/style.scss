@@ -1,45 +1,101 @@
 // Custom.scss
-// Option A: Include all of Bootstrap
+// Option B: Include parts of Bootstrap
 
-// Include any default variable overrides here (though functions won't be available)
+// 1. Include functions first (so you can manipulate colors, SVGs, calc, etc)
+@import "../node_modules/bootstrap/scss/functions";
 
-$accordion-button-focus-box-shadow: none;
-@import "../node_modules/bootstrap/scss/bootstrap";
+// 2. Include any default variable overrides here
+$primary: #0074d9;
+$danger: #ff4136;
 
-// Then add additional custom code here
-// scss-docs-start accordion-variables
-$accordion-padding-y: 1rem !default;
-$accordion-padding-x: 1.25rem !default;
-$accordion-color: $body-color !default; // Sass variable because of $accordion-button-icon
-$accordion-bg: $body-bg !default;
-$accordion-border-width: $border-width !default;
-$accordion-border-color: var(--#{$prefix}border-color) !default;
-$accordion-border-radius: $border-radius !default;
-$accordion-inner-border-radius: subtract(
-  $accordion-border-radius,
-  $accordion-border-width
-) !default;
+// 3. Include remainder of required Bootstrap stylesheets
+@import "../node_modules/bootstrap/scss/variables";
 
-$accordion-body-padding-y: $accordion-padding-y !default;
-$accordion-body-padding-x: $accordion-padding-x !default;
+// 4. Include any default map overrides here
 
-$accordion-button-padding-y: $accordion-padding-y !default;
-$accordion-button-padding-x: $accordion-padding-x !default;
-$accordion-button-color: $accordion-color !default;
-$accordion-button-bg: var(--#{$prefix}accordion-bg) !default;
-$accordion-transition: $btn-transition, border-radius 0.15s ease !default;
-$accordion-button-active-bg: tint-color($component-active-bg, 90%) !default;
-$accordion-button-active-color: shade-color($primary, 10%) !default;
+// 5. Include remainder of required parts
+@import "../node_modules/bootstrap/scss/maps";
+@import "../node_modules/bootstrap/scss/mixins";
+@import "../node_modules/bootstrap/scss/root";
 
-$accordion-button-focus-border-color: $input-focus-border-color !default;
-$accordion-button-focus-box-shadow: $btn-focus-box-shadow !default;
+// 6. Optionally include any other parts as needed
+@import "../node_modules/bootstrap/scss/utilities";
+@import "../node_modules/bootstrap/scss/reboot";
+@import "../node_modules/bootstrap/scss/type";
+@import "../node_modules/bootstrap/scss/images";
+@import "../node_modules/bootstrap/scss/containers";
+@import "../node_modules/bootstrap/scss/grid";
+@import "../node_modules/bootstrap/scss/helpers";
 
-$accordion-icon-width: 1.25rem !default;
-$accordion-icon-color: $accordion-button-color !default;
-$accordion-icon-active-color: $accordion-button-active-color !default;
-$accordion-icon-transition: transform 0.2s ease-in-out !default;
-$accordion-icon-transform: rotate(-180deg) !default;
+// 7. Optionally include utilities API last to generate classes based on the Sass map in `_utilities.scss`
+@import "../node_modules/bootstrap/scss/utilities/api";
 
-$accordion-button-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$accordion-icon-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !default;
-$accordion-button-active-icon: url("data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 16 16' fill='#{$accordion-icon-active-color}'><path fill-rule='evenodd' d='M1.646 4.646a.5.5 0 0 1 .708 0L8 10.293l5.646-5.647a.5.5 0 0 1 .708.708l-6 6a.5.5 0 0 1-.708 0l-6-6a.5.5 0 0 1 0-.708z'/></svg>") !default;
-// scss-docs-end accordion-variables
+// 8. Add additional custom code here
+
+// Create your own map
+$custom-colors: (
+  "custom-color": #900,
+);
+
+// Merge the maps
+$theme-colors: map-merge($theme-colors, $custom-colors);
+
+.navbar {
+  background-color: $cyan-100;
+}
+
+// You can lighten or darken colors with Bootstrap’s tint-color() and shade-color() functions. These functions will mix colors with black or white, unlike Sass’ native lighten() and darken() functions which will change the lightness by a fixed amount, which often doesn’t lead to the desired effect.
+
+// Good example with red color
+
+// Tint a color: mix a color with white
+// осветляем или меняем оттенки
+@function tint-color($color, $weight) {
+  @return mix(white, $color, $weight);
+}
+
+// Shade a color: mix a color with black
+// Притемняем или меняем оттенки
+@function shade-color($color, $weight) {
+  @return mix(black, $color, $weight);
+}
+
+// Shade the color if the weight is positive, else tint it
+@function shift-color($color, $weight) {
+  @return if(
+    $weight > 0,
+    shade-color($color, $weight),
+    tint-color($color, -$weight)
+  );
+}
+
+// In practice, you’d call the function and pass in the color and weight parameters.
+
+// For example, to generate color swatches from our $theme-colors map:
+
+@each $color, $value in $theme-colors {
+  .swatch-#{$color} {
+    color: color-contrast($value);
+  }
+}
+
+// It can also be used for one-off contrast needs:
+
+.navbar {
+  background-color: color-contrast(#000); // returns `color: #fff`
+}
+
+// You can also specify a base color with our color map functions:
+
+.custom-element {
+  color: color-contrast($dark); // returns `color: #fff`
+}
+
+/*
+.navbar {
+  background-color: tint-color($indigo, 30%);
+}
+*/
+.custom-element-2 {
+  color: shade-color($danger, 30%);
+}

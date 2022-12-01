@@ -5911,7 +5911,7 @@ main .btn:hover {
   background-color: #1f6895;
 }
 
-main .row .col .card {
+main .row .column .card {
   background-color: #392e5c;
   color: white;
 }

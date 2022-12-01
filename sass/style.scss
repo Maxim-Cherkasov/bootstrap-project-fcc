@@ -5,9 +5,7 @@
 @import "../node_modules/bootstrap/scss/functions";
 
 // 2. Include any default variable overrides here
-$primary: #0074d9;
-$danger: #ff4136;
-
+$primary: tint-color(#2274a5, 60%);
 // 3. Include remainder of required Bootstrap stylesheets
 @import "../node_modules/bootstrap/scss/variables";
 
@@ -32,30 +30,14 @@ $danger: #ff4136;
 
 // 8. Add additional custom code here
 
-// Create your own map
-$custom-colors: (
-  "custom-color": #900,
-);
-
-// Merge the maps
-$theme-colors: map-merge($theme-colors, $custom-colors);
-
-.navbar {
-  background-color: $cyan-100;
-}
-
-// You can lighten or darken colors with Bootstrap’s tint-color() and shade-color() functions. These functions will mix colors with black or white, unlike Sass’ native lighten() and darken() functions which will change the lightness by a fixed amount, which often doesn’t lead to the desired effect.
-
-// Good example with red color
+// You can lighten or darken colors with Bootstrap’s tint-color() and shade-color() functions.
 
 // Tint a color: mix a color with white
-// осветляем или меняем оттенки
 @function tint-color($color, $weight) {
   @return mix(white, $color, $weight);
 }
 
 // Shade a color: mix a color with black
-// Притемняем или меняем оттенки
 @function shade-color($color, $weight) {
   @return mix(black, $color, $weight);
 }
@@ -69,33 +51,30 @@ $theme-colors: map-merge($theme-colors, $custom-colors);
   );
 }
 
-// In practice, you’d call the function and pass in the color and weight parameters.
+.navbar {
+  color: grey;
+  background: linear-gradient(270deg, #774037, #1a2f85, #761a85);
+}
 
-// For example, to generate color swatches from our $theme-colors map:
+footer {
+  background-color: #392e5c;
+}
 
-@each $color, $value in $theme-colors {
-  .swatch-#{$color} {
-    color: color-contrast($value);
+main .btn {
+  background-color: #9946fb;
+  color: black;
+  &:hover {
+    background-color: shade-color(#2274a5, 10%);
   }
 }
 
-// It can also be used for one-off contrast needs:
-
-.navbar {
-  background-color: color-contrast(#000); // returns `color: #fff`
+// my styles today
+main .row .col .card {
+  background-color: #392e5c;
+  color: white;
 }
 
-// You can also specify a base color with our color map functions:
-
-.custom-element {
-  color: color-contrast($dark); // returns `color: #fff`
-}
-
-/*
-.navbar {
-  background-color: tint-color($indigo, 30%);
-}
-*/
-.custom-element-2 {
-  color: shade-color($danger, 30%);
+body {
+  background-color: #201c2b;
+  color: white;
 }

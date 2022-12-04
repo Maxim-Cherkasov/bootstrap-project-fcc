@@ -84,3 +84,27 @@ body {
   font-family: "Nunito", sans-serif;
   font-weight: 400;
 }
+
+header .navbar .container .navbar-nav {
+  flex-direction: row;
+
+  li {
+    padding-right: 1rem;
+  }
+}
+
+.sup {
+  color: #25d366;
+}
+
+.tg {
+  color: #2aabee;
+}
+
+.call {
+  color: #6d9dd7;
+}
+
+h4 {
+  color: $primary;
+}
